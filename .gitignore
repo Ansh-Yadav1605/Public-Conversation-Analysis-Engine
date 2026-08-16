@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Data files (large JSONL stores and state files are not tracked in git)
+engine/data/raw_records/*.jsonl
+engine/data/signals/*.jsonl
+engine/data/opportunities/*.jsonl
+engine/data/*.json
+
+# Log files
+engine/logs/*.log
+
+# Environment variables / secrets (API keys)
+.env
+*.env
+secrets.yaml
+credentials.yaml
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+Thumbs.db

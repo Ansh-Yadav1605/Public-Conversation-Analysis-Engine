@@ -1,0 +1,149 @@
+# =============================================================================
+# question_set.yaml
+# Public Conversation Analysis Engine — Behavioral Question Set
+# =============================================================================
+#
+# Schema per question:
+#   question_id        : int    — unique identifier 1–10
+#   question_text      : string — full human-readable question
+#   related_dimensions : list[str] — taxonomy dimensions that help answer this question
+#   notes              : string — optional guidance on what a good answer looks like
+#
+# Coverage requirement:
+#   - Every question must be covered by at least one taxonomy dimension.
+#   - Every taxonomy dimension must map to at least one question.
+#   - The report (Phase 5) will produce one evidence section per question.
+# =============================================================================
+
+questions:
+
+  - question_id: 1
+    question_text: >
+      Why do users add fashion products to their wishlist in the first place?
+    related_dimensions:
+      - "Styling & Occasion"
+      - "Social Validation"
+      - "Intent Signal"
+    notes: >
+      Look for the initial motivation: aspirational browsing, trend following, gifting,
+      planning for an upcoming event, or styling inspiration. Distinguish active
+      intent from passive bookmarking in signals.
+
+  - question_id: 2
+    question_text: >
+      What prevents wishlisted products from eventually being purchased?
+    related_dimensions:
+      - "Fit & Sizing"
+      - "Price & Value"
+      - "Trust & Reviews"
+      - "Return & Risk"
+    notes: >
+      This question captures purchase barriers — the reasons a wishlisted item never
+      converts to a transaction. Look for signals about price, fit uncertainty,
+      trust gaps, return risk, and out-of-stock issues.
+
+  - question_id: 3
+    question_text: >
+      What uncertainties remain after a user has already identified a product they like?
+    related_dimensions:
+      - "Fit & Sizing"
+      - "Styling & Occasion"
+      - "Trust & Reviews"
+      - "Product Information"
+    notes: >
+      The user has already decided they like the product. What open questions remain?
+      Typically: will it fit, does it look as shown, is the brand trustworthy, what
+      occasion is it right for? These are residual doubts blocking the final step.
+
+  - question_id: 4
+    question_text: >
+      What causes users to postpone a purchase rather than abandon or complete it?
+    related_dimensions:
+      - "Price & Value"
+      - "Return & Risk"
+    notes: >
+      Distinguish postponement (I will buy later) from abandonment (I won't buy).
+      Look for signals about waiting for sales, pay-cycle timing, waiting for an event,
+      or removing risk before committing.
+
+  - question_id: 5
+    question_text: >
+      How do users compare multiple shortlisted products against each other?
+    related_dimensions:
+      - "Comparison Behavior"
+    notes: >
+      Look for descriptions of side-by-side evaluation: feature comparison, price
+      comparison, or style comparison between two or more shortlisted items. Identify
+      the attributes users use as tiebreakers.
+
+  - question_id: 6
+    question_text: >
+      What information do users seek outside the platform (Myntra/AJIO and beyond)
+      before deciding?
+    related_dimensions:
+      - "Trust & Reviews"
+      - "Product Information"
+      - "Comparison Behavior"
+    notes: >
+      Look for mentions of going to YouTube, Reddit, Google, or Instagram to find
+      additional information the platform does not provide — size reviews, real-life
+      looks, brand authenticity checks.
+
+  - question_id: 7
+    question_text: >
+      What role do fit, size, styling, price, reviews, occasion, and social validation
+      each play — and how do they interact?
+    related_dimensions:
+      - "Fit & Sizing"
+      - "Styling & Occasion"
+      - "Price & Value"
+      - "Trust & Reviews"
+      - "Social Validation"
+      - "Product Information"
+    notes: >
+      This is a multi-dimensional synthesis question. Signals from all major dimensions
+      contribute. Look for patterns where two factors co-appear (e.g., fit uncertainty +
+      price hesitation → double barrier). The opportunity synthesizer should flag
+      co-occurring nodes.
+
+  - question_id: 8
+    question_text: >
+      When is a wishlist add genuine purchase intent, and when is it just bookmarking?
+    related_dimensions:
+      - "Intent Signal"
+      - "Styling & Occasion"
+      - "Social Validation"
+    notes: >
+      Look for linguistic and contextual markers that distinguish high-intent adds
+      (payday reference, specific event, "adding to cart soon") from passive saves
+      ("just saving for inspiration", "window shopping"). This distinction is critical
+      for segmentation.
+
+  - question_id: 9
+    question_text: >
+      How do these behaviors and motivations differ across user segments?
+    related_dimensions:
+      - "Segment Markers"
+      - "Intent Signal"
+    notes: >
+      Segment markers (demographic, frequency, value orientation) provide context
+      for all other signals. Look for patterns where a specific segment (e.g., budget
+      buyers vs. premium buyers, frequent vs. occasional shoppers) shows a distinct
+      set of barriers or motivations.
+
+  - question_id: 10
+    question_text: >
+      What unmet needs show up consistently, across independent conversations,
+      rather than as one-off complaints?
+    related_dimensions:
+      - "Segment Markers"
+      - "Fit & Sizing"
+      - "Price & Value"
+      - "Trust & Reviews"
+      - "Return & Risk"
+      - "Product Information"
+    notes: >
+      This is the synthesis question that drives prioritization. Cross-source recurrence
+      is the key signal — the same unmet need must appear independently across multiple
+      source types to qualify as a systemic opportunity rather than isolated noise.
+      The cross-source validator in Phase 4 operationalizes this directly.

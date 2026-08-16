@@ -1,0 +1,26 @@
+Problem Statement
+
+Product teams trying to understand why users hesitate, stall, or abandon a specific behavior — like adding a fashion product to a wishlist but never buying it — routinely default to internal analytics and gut-instinct hypotheses, because reading real user language at scale across App Store reviews, Play Store reviews, Reddit, shopping communities, social media, YouTube comments, and product Q&A is too slow and manual to do consistently. This means product decisions get made on assumption rather than evidence, and the qualitative research that could catch a wrong assumption tends to arrive late — as validation of a solution someone already committed to, not as early discovery of the real problem.
+
+Compounding this, public conversation data is messy and inconsistent across sources: a single review or thread can contain multiple distinct signals — a fit complaint, a styling doubt, a price hesitation, a trust concern — with no shared structure to make them comparable, clusterable, or rankable. Sentiment analysis alone can't fix this, since two "negative" mentions can point to completely different root causes.
+
+What this engine does: scrapes and analyzes public conversation across App Store reviews, Play Store reviews, Reddit discussions, fashion and shopping communities, social media, YouTube comments, and product reviews/Q&A, to answer a defined set of behavioral questions that summarization or sentiment analysis alone cannot:
+
+1. Why do users add fashion products to their wishlist in the first place?
+2. What prevents wishlisted products from eventually being purchased?
+3. What uncertainties remain after a user has already identified a product they like?
+4. What causes users to postpone a purchase rather than abandon or complete it?
+5. How do users compare multiple shortlisted products against each other?
+6. What information do users seek outside the platform (Myntra/AJIO and beyond) before deciding?
+7. What role do fit, size, styling, price, reviews, occasion, and social validation each play — and how do they interact?
+8. When is a wishlist add genuine purchase intent, and when is it just bookmarking?
+9. How do these behaviors and motivations differ across user segments?
+10. What unmet needs show up consistently, across independent conversations, rather than as one-off complaints?
+
+The engine goes beyond summarizing or scoring sentiment: it identifies discrete opportunity areas, quantifies them where evidence allows (frequency, severity, segment concentration), and makes them comparable against each other — so a product team can move from "we don't know why users behave this way" to a ranked, evidence-tagged shortlist worth taking into primary research.
+
+Why it's built generically: while this brief and the graduation project both anchor on fashion e-commerce, the underlying pipeline — source scraping, taxonomy-based extraction, opportunity clustering and scoring — isn't fashion-specific. The taxonomy and question set are configurable inputs, not hardcoded logic, so the same engine could be re-pointed at a different product category or business problem without a rebuild.
+
+What it explicitly is not: a replacement for primary user research (interviews remain the validation layer, per this project's own research sequence), and not a sentiment-analysis or review-summarization tool — those are explicitly named as insufficient for the goal.
+
+Success looks like: given the fashion-shopping source list above and this question set, the engine returns a structured, source-traceable set of opportunity areas — each with frequency/severity/evidence-strength where the data supports it — answering the ten questions above with real evidence rather than assumption, in far less time than a manual research pass would take.

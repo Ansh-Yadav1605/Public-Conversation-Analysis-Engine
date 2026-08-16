@@ -1,0 +1,258 @@
+# =============================================================================
+# source_list.yaml
+# Public Conversation Analysis Engine — Configuration Layer
+# =============================================================================
+#
+# Schema:
+#   source_type   : string — [app_store | play_store | reddit | social |
+#                   youtube | forum | review_qa]
+#   source_name   : string — human-readable display name
+#   enabled       : bool   — include this source in pipeline runs
+#   lookback_days : int    — max days back for date_published filtering
+#   volume_cap    : int    — max raw records to fetch per run from this source
+#   config        : dict   — source-specific parameters (app IDs, keywords, etc.)
+#
+# Notes:
+#   - Set enabled: false to skip without deleting config.
+#   - volume_cap is a ceiling; actual volume depends on data availability.
+#   - Sources without a publish date are not filtered by lookback_days.
+# =============================================================================
+
+sources:
+
+  # ---------------------------------------------------------------------------
+  # SOURCE TYPE: app_store
+  # Apple App Store reviews — high signal richness, structured format
+  # ---------------------------------------------------------------------------
+  - source_type: app_store
+    source_name: "Apple App Store — Myntra"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 500
+    config:
+      app_id: "1457057405"
+      app_name: "Myntra"
+      country: "in"
+      rating_filter: null        # null = all ratings; e.g. [1,2,3] for low stars only
+
+  - source_type: app_store
+    source_name: "Apple App Store — AJIO"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 500
+    config:
+      app_id: "1329926429"
+      app_name: "AJIO"
+      country: "in"
+      rating_filter: null
+
+  # ---------------------------------------------------------------------------
+  # SOURCE TYPE: play_store
+  # Google Play Store reviews — high signal richness, structured format
+  # ---------------------------------------------------------------------------
+  - source_type: play_store
+    source_name: "Google Play Store — Myntra"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 500
+    config:
+      app_id: "com.myntra.android"
+      app_name: "Myntra"
+      country: "in"
+      language: "en"
+      rating_filter: null
+
+  - source_type: play_store
+    source_name: "Google Play Store — AJIO"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 500
+    config:
+      app_id: "com.ril.ajio"
+      app_name: "AJIO"
+      country: "in"
+      language: "en"
+      rating_filter: null
+
+  # ---------------------------------------------------------------------------
+  # SOURCE TYPE: reddit
+  # Reddit threads — highest signal richness; long-form, contextual discussions
+  # ---------------------------------------------------------------------------
+  - source_type: reddit
+    source_name: "Reddit — r/IndianFashionAddicts"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 300
+    config:
+      subreddit: "IndianFashionAddicts"
+      search_keywords:
+        - "myntra wishlist"
+        - "ajio wishlist"
+        - "size chart"
+        - "fit issue"
+        - "return policy"
+        - "online fashion india"
+        - "buying clothes online"
+      sort: "top"                # top | hot | new | relevance
+      post_type: "link+self"
+      include_comments: true
+      max_comments_per_post: 50
+
+  - source_type: reddit
+    source_name: "Reddit — r/frugalmalefashionin"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 200
+    config:
+      subreddit: "frugalmalefashionin"
+      search_keywords:
+        - "myntra"
+        - "ajio"
+        - "wishlist"
+        - "size"
+        - "fit"
+        - "return"
+      sort: "top"
+      post_type: "link+self"
+      include_comments: true
+      max_comments_per_post: 30
+
+  - source_type: reddit
+    source_name: "Reddit — r/india (fashion & shopping threads)"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 200
+    config:
+      subreddit: "india"
+      search_keywords:
+        - "myntra review"
+        - "ajio review"
+        - "online fashion shopping"
+        - "wishlist purchase experience"
+      sort: "relevance"
+      post_type: "link+self"
+      include_comments: true
+      max_comments_per_post: 30
+
+  # ---------------------------------------------------------------------------
+  # SOURCE TYPE: forum
+  # Fashion forums and communities — topic-specific, high-context signal source
+  # ---------------------------------------------------------------------------
+  - source_type: forum
+    source_name: "Quora — Myntra & AJIO Shopping Topics"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 200
+    config:
+      base_url: "https://www.quora.com"
+      topic_urls:
+        - "https://www.quora.com/topic/Myntra-Online-Shopping"
+        - "https://www.quora.com/topic/AJIO"
+        - "https://www.quora.com/topic/Online-Shopping-India"
+      selector_config:
+        post_container: ".q-box"
+        text_field: ".q-text"
+        date_field: ".q-relative-time"
+      scrape_comments: true
+      request_delay_seconds: 2.0  # polite crawl delay
+
+  - source_type: forum
+    source_name: "PaisaWapas Community Reviews"
+    enabled: false               # disabled until site-specific scraper is implemented
+    lookback_days: 365
+    volume_cap: 150
+    config:
+      base_url: "https://www.paisawapas.com"
+      topic_urls: []
+      selector_config: {}
+      scrape_comments: false
+      request_delay_seconds: 2.0
+
+  # ---------------------------------------------------------------------------
+  # SOURCE TYPE: social
+  # Twitter/X keyword and hashtag search — medium richness, high volume
+  # ---------------------------------------------------------------------------
+  - source_type: social
+    source_name: "Twitter/X — Myntra & AJIO Fashion Discussions"
+    enabled: true
+    lookback_days: 180           # Twitter API Basic tier limits historical depth
+    volume_cap: 400
+    config:
+      platform: "twitter"
+      search_queries:
+        - "myntra wishlist"
+        - "myntra size issue"
+        - "myntra return experience"
+        - "ajio shopping experience"
+        - "ajio size problem"
+        - "#MyntraHaul"
+        - "#AJIOFashion"
+        - "online fashion india sizing"
+      language: "en"
+      exclude_retweets: true
+      min_likes: 0
+
+  # ---------------------------------------------------------------------------
+  # SOURCE TYPE: youtube
+  # YouTube video comments — contextual, medium-to-high richness
+  # Target: haul, review, and try-on videos for Myntra/AJIO
+  # ---------------------------------------------------------------------------
+  - source_type: youtube
+    source_name: "YouTube — Myntra & AJIO Fashion Haul & Review Videos"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 400
+    config:
+      search_queries:
+        - "Myntra haul 2024"
+        - "AJIO haul review 2024"
+        - "Myntra shopping experience review"
+        - "India online fashion wishlist haul"
+        - "Myntra try on review"
+        - "AJIO try on haul"
+      max_videos_per_query: 5
+      max_comments_per_video: 100
+      language: "en"
+      order: "relevance"         # relevance | date | viewCount | rating
+
+  # ---------------------------------------------------------------------------
+  # SOURCE TYPE: review_qa
+  # On-platform Myntra & AJIO product reviews and Q&A — product-specific signals
+  # ---------------------------------------------------------------------------
+  - source_type: review_qa
+    source_name: "Myntra Product Reviews & Q&A"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 500
+    config:
+      platform: "myntra"
+      base_url: "https://www.myntra.com"
+      category_urls:
+        - "https://www.myntra.com/men-tshirts"
+        - "https://www.myntra.com/women-dresses"
+        - "https://www.myntra.com/women-tops"
+        - "https://www.myntra.com/men-shirts"
+        - "https://www.myntra.com/women-jeans"
+      products_per_category: 10
+      reviews_per_product: 50
+      include_qa: true
+      request_delay_seconds: 3.0
+
+  - source_type: review_qa
+    source_name: "AJIO Product Reviews & Q&A"
+    enabled: true
+    lookback_days: 365
+    volume_cap: 500
+    config:
+      platform: "ajio"
+      base_url: "https://www.ajio.com"
+      category_urls:
+        - "https://www.ajio.com/men-tshirts"
+        - "https://www.ajio.com/women-dresses"
+        - "https://www.ajio.com/women-tops"
+        - "https://www.ajio.com/men-shirts"
+        - "https://www.ajio.com/women-jeans"
+      products_per_category: 10
+      reviews_per_product: 50
+      include_qa: true
+      request_delay_seconds: 3.0

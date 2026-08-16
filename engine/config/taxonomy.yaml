@@ -1,0 +1,802 @@
+# =============================================================================
+# taxonomy.yaml
+# Public Conversation Analysis Engine — Taxonomy Configuration
+# =============================================================================
+#
+# Schema per node:
+#   node_id          : string — unique dot-notation ID (dimension.sub_category)
+#   label            : string — human-readable category name
+#   dimension        : string — parent behavioral dimension (one of 10)
+#   sub_category     : string — human-readable sub-category name
+#   question_refs    : list[int] — question IDs (1-10) this node helps answer
+#   detection_rules  :
+#     keywords       : list[str] — seed keywords / phrases (10-20 per node)
+#     embedding_hint : string — natural language description for embedding centroid
+#
+# Coverage requirement:
+#   - Every question (1-10) must be reachable via at least one taxonomy path.
+#   - Every dimension must map to at least one question.
+#   - Minimum 29 nodes total across all 10 dimensions.
+# =============================================================================
+
+taxonomy:
+
+  # ===========================================================================
+  # DIMENSION 1 — Fit & Sizing
+  # Maps to: Q2 (barriers to purchase), Q3 (uncertainties), Q7 (fit/size role)
+  # Nodes: 4
+  # ===========================================================================
+
+  - node_id: fit_sizing.size_uncertainty
+    label: "Size Uncertainty — Unknown Which Size to Order"
+    dimension: "Fit & Sizing"
+    sub_category: "Size Uncertainty"
+    question_refs: [2, 3, 7]
+    detection_rules:
+      keywords:
+        - "not sure about size"
+        - "which size to order"
+        - "confused about sizing"
+        - "size chart not helpful"
+        - "size chart inaccurate"
+        - "should I size up"
+        - "should I size down"
+        - "what size should I get"
+        - "ordered wrong size"
+        - "size guide misleading"
+        - "true to size"
+        - "runs small"
+        - "runs large"
+        - "fit guide"
+        - "size recommendation"
+      embedding_hint: >
+        A user is uncertain about which clothing size to select before buying online.
+        They do not trust the size chart, are unsure if the item runs true to size,
+        or have previously ordered the wrong size from this platform.
+
+  - node_id: fit_sizing.inconsistent_sizing
+    label: "Inconsistent Sizing — Size Varies Across Brands"
+    dimension: "Fit & Sizing"
+    sub_category: "Inconsistent Sizing Across Brands"
+    question_refs: [2, 3, 7]
+    detection_rules:
+      keywords:
+        - "different sizes across brands"
+        - "size inconsistency"
+        - "same size different brand"
+        - "size varies"
+        - "medium in one brand"
+        - "large in another"
+        - "no standard sizing"
+        - "brand sizing differs"
+        - "can't rely on size"
+        - "sizing is inconsistent"
+        - "size M from Zara but L on Myntra"
+        - "every brand has different sizing"
+        - "sizing not standardized"
+      embedding_hint: >
+        A user complains that clothing sizes are inconsistent across different brands
+        on the platform, making it impossible to rely on a single size to order.
+        They may have bought the same nominal size from two brands and gotten very
+        different fits.
+
+  - node_id: fit_sizing.body_type_fit
+    label: "Body Type Fit — Clothes Don't Fit Specific Body Shapes"
+    dimension: "Fit & Sizing"
+    sub_category: "Fit for Specific Body Type"
+    question_refs: [2, 3, 7]
+    detection_rules:
+      keywords:
+        - "doesn't fit my body type"
+        - "not designed for my shape"
+        - "too narrow at hips"
+        - "too wide at shoulders"
+        - "petite sizing"
+        - "plus size fit"
+        - "curvy fit"
+        - "athletic build"
+        - "tall sizing"
+        - "clothes not made for my shape"
+        - "body type problem"
+        - "broad shoulders fit issue"
+        - "fitted at waist not hips"
+        - "model body type only"
+      embedding_hint: >
+        A user finds that the clothing is not designed for their particular body shape
+        or type. The item may fit well in one area but not another, or the brand only
+        caters to a specific body type the user does not have.
+
+  - node_id: fit_sizing.return_size_exchange
+    label: "Size-Related Return — Returned Because Size Was Wrong"
+    dimension: "Fit & Sizing"
+    sub_category: "Size-Driven Return"
+    question_refs: [2, 7]
+    detection_rules:
+      keywords:
+        - "returned because of size"
+        - "wrong size delivered"
+        - "had to return for size"
+        - "size exchange"
+        - "returned and reordered"
+        - "exchanged for different size"
+        - "size mismatch on delivery"
+        - "size not as shown"
+        - "item too small"
+        - "item too large"
+        - "fit was off"
+        - "returned due to fit"
+      embedding_hint: >
+        A user has already purchased and received an item, but had to return or exchange
+        it specifically because the size or fit was wrong relative to their expectations
+        or the size chart.
+
+  # ===========================================================================
+  # DIMENSION 2 — Styling & Occasion
+  # Maps to: Q1 (why wishlist), Q3 (uncertainties), Q7 (styling role)
+  # Nodes: 3
+  # ===========================================================================
+
+  - node_id: styling_occasion.occasion_mismatch
+    label: "Occasion Mismatch — Unsure If Item Fits the Occasion"
+    dimension: "Styling & Occasion"
+    sub_category: "Occasion Mismatch"
+    question_refs: [1, 3, 7]
+    detection_rules:
+      keywords:
+        - "not sure if appropriate for"
+        - "occasion fit"
+        - "too casual for work"
+        - "too formal for casual"
+        - "can I wear this to"
+        - "dress code confusion"
+        - "party appropriate"
+        - "office wear"
+        - "wedding appropriate"
+        - "occasion styling"
+        - "not versatile enough"
+        - "only for one occasion"
+        - "when would I wear this"
+        - "suitable for the event"
+      embedding_hint: >
+        A user is hesitating because they are unsure whether a fashion item they like
+        is appropriate or suitable for the specific occasion they have in mind — be it
+        a party, office, casual outing, or special event.
+
+  - node_id: styling_occasion.styling_doubt
+    label: "Styling Doubt — Unsure How to Wear or Style the Item"
+    dimension: "Styling & Occasion"
+    sub_category: "Styling Coordination Doubt"
+    question_refs: [3, 7]
+    detection_rules:
+      keywords:
+        - "how to style this"
+        - "what to pair with"
+        - "what shoes to wear with"
+        - "can't figure out outfit"
+        - "styling advice"
+        - "doesn't go with anything I own"
+        - "hard to style"
+        - "how to wear"
+        - "outfit ideas"
+        - "coordinate with"
+        - "match with my wardrobe"
+        - "nothing to pair it with"
+        - "hard to accessorize"
+      embedding_hint: >
+        A user likes an item but hesitates because they are unsure how to style it,
+        what to pair it with, or whether it will work with the rest of their wardrobe.
+
+  - node_id: styling_occasion.wishlist_aspiration
+    label: "Aspirational Wishlist — Wishlisted for Styling Inspiration, Not Immediate Purchase"
+    dimension: "Styling & Occasion"
+    sub_category: "Aspiration Bookmark"
+    question_refs: [1, 7, 8]
+    detection_rules:
+      keywords:
+        - "saved for inspiration"
+        - "wishlist for later"
+        - "not buying now"
+        - "just bookmarked"
+        - "maybe someday"
+        - "aspirational purchase"
+        - "love the look but"
+        - "dream wardrobe"
+        - "fashion goals"
+        - "saved to look at again"
+        - "pinned for styling ideas"
+        - "not ready to buy"
+      embedding_hint: >
+        A user adds items to a wishlist not as a step toward purchasing but as
+        styling inspiration, mood board content, or aspirational bookmarking. There
+        is no immediate purchase intent — it is passive saving.
+
+  # ===========================================================================
+  # DIMENSION 3 — Price & Value
+  # Maps to: Q2 (barriers), Q4 (postponement), Q7 (price role)
+  # Nodes: 4
+  # ===========================================================================
+
+  - node_id: price_value.price_hesitation
+    label: "Price Hesitation — Item Is Too Expensive to Buy Now"
+    dimension: "Price & Value"
+    sub_category: "Price Hesitation"
+    question_refs: [2, 4, 7]
+    detection_rules:
+      keywords:
+        - "too expensive"
+        - "out of my budget"
+        - "can't afford right now"
+        - "price is too high"
+        - "not worth the price"
+        - "overpriced"
+        - "way too expensive"
+        - "price point is steep"
+        - "too costly"
+        - "can't justify the price"
+        - "pricey"
+        - "expensive for what it is"
+      embedding_hint: >
+        A user wants an item but finds the current price too high relative to their
+        budget or their perceived value of the product. The price is the primary
+        reason they are not completing the purchase right now.
+
+  - node_id: price_value.waiting_for_sale
+    label: "Waiting for Sale — Deferring Purchase Until Price Drops"
+    dimension: "Price & Value"
+    sub_category: "Sale / Discount Wait"
+    question_refs: [2, 4, 7]
+    detection_rules:
+      keywords:
+        - "waiting for sale"
+        - "will buy on sale"
+        - "waiting for discount"
+        - "hope it goes on sale"
+        - "wait for big billion day"
+        - "wait for end of season sale"
+        - "wait for myntra sale"
+        - "wait for ajio sale"
+        - "price drop"
+        - "add to wishlist and wait"
+        - "buying only at discount"
+        - "worth waiting for sale"
+        - "festive sale"
+        - "coupon code"
+      embedding_hint: >
+        A user explicitly states they are deferring purchase until the item goes on
+        sale or a discount event occurs. The wishlist is used as a holding place while
+        they wait for a price drop.
+
+  - node_id: price_value.price_quality_doubt
+    label: "Price vs. Quality Doubt — Unsure If Item Is Worth the Price"
+    dimension: "Price & Value"
+    sub_category: "Price-Quality Uncertainty"
+    question_refs: [2, 7]
+    detection_rules:
+      keywords:
+        - "not sure if it's worth it"
+        - "quality justifies price"
+        - "is the quality good for the price"
+        - "price vs quality"
+        - "cheap quality"
+        - "fabric quality for price"
+        - "value for money"
+        - "material quality"
+        - "not worth buying"
+        - "looks cheap"
+        - "poor quality for the cost"
+        - "questionable quality"
+        - "unsure about material"
+      embedding_hint: >
+        A user is uncertain whether the quality of the item — fabric, finish,
+        construction — justifies the price being asked. They are not sure the product
+        will deliver the value implied by the price tag.
+
+  - node_id: price_value.price_comparison
+    label: "Price Comparison — Comparing Prices Across Platforms Before Buying"
+    dimension: "Price & Value"
+    sub_category: "Cross-Platform Price Comparison"
+    question_refs: [2, 4, 7]
+    detection_rules:
+      keywords:
+        - "checking price on amazon"
+        - "same item cheaper elsewhere"
+        - "found it cheaper on"
+        - "price comparison"
+        - "best price"
+        - "price match"
+        - "compare prices"
+        - "cheaper alternative"
+        - "same brand on flipkart"
+        - "price difference"
+        - "not buying until I check other sites"
+        - "shopping around for price"
+      embedding_hint: >
+        A user is actively comparing the price of an item on Myntra or AJIO against
+        other platforms before committing to purchase. They will not buy until they
+        are confident they have found the best available price.
+
+  # ===========================================================================
+  # DIMENSION 4 — Trust & Reviews
+  # Maps to: Q2 (barriers), Q3 (uncertainties), Q6 (external info seeking)
+  # Nodes: 3
+  # ===========================================================================
+
+  - node_id: trust_reviews.review_scarcity
+    label: "Review Scarcity — Too Few Reviews to Trust the Product"
+    dimension: "Trust & Reviews"
+    sub_category: "Insufficient Review Volume"
+    question_refs: [2, 3, 6]
+    detection_rules:
+      keywords:
+        - "not enough reviews"
+        - "very few reviews"
+        - "only 2 reviews"
+        - "no reviews yet"
+        - "can't find reviews"
+        - "reviews missing"
+        - "new product no reviews"
+        - "hard to trust without reviews"
+        - "need more reviews before buying"
+        - "no one has reviewed this"
+        - "insufficient reviews"
+      embedding_hint: >
+        A user hesitates to purchase because the product has very few or no reviews,
+        leaving them without sufficient social proof to feel confident in their decision.
+
+  - node_id: trust_reviews.review_authenticity
+    label: "Review Authenticity Doubt — Skeptical That Reviews Are Genuine"
+    dimension: "Trust & Reviews"
+    sub_category: "Review Credibility Concern"
+    question_refs: [2, 3, 6]
+    detection_rules:
+      keywords:
+        - "fake reviews"
+        - "paid reviews"
+        - "sponsored reviews"
+        - "bot reviews"
+        - "inflated ratings"
+        - "reviews seem fake"
+        - "too many 5-star reviews"
+        - "all reviews same"
+        - "copy pasted reviews"
+        - "reviews not genuine"
+        - "can't trust the ratings"
+        - "manipulated ratings"
+        - "suspicious reviews"
+      embedding_hint: >
+        A user suspects that the reviews on the platform are fake, paid, or otherwise
+        manipulated. They do not trust the ratings or written reviews as genuine
+        representations of the product's quality.
+
+  - node_id: trust_reviews.brand_credibility
+    label: "Brand Credibility — Uncertain Whether to Trust an Unfamiliar Brand"
+    dimension: "Trust & Reviews"
+    sub_category: "Brand Trust Uncertainty"
+    question_refs: [2, 3, 6]
+    detection_rules:
+      keywords:
+        - "never heard of this brand"
+        - "unknown brand"
+        - "can I trust this seller"
+        - "is this brand reliable"
+        - "brand reputation"
+        - "new brand unsure"
+        - "not a well-known brand"
+        - "third party seller"
+        - "brand quality unknown"
+        - "unfamiliar brand"
+        - "small brand"
+        - "brand authenticity"
+      embedding_hint: >
+        A user is hesitating because they do not recognize or trust the brand selling
+        the item. They are unsure about the brand's quality, reputation, or reliability
+        compared to brands they already know and trust.
+
+  # ===========================================================================
+  # DIMENSION 5 — Return & Risk
+  # Maps to: Q2 (barriers), Q4 (postponement)
+  # Nodes: 2
+  # ===========================================================================
+
+  - node_id: return_risk.return_policy_friction
+    label: "Return Policy Friction — Complicated or Uncertain Return Process"
+    dimension: "Return & Risk"
+    sub_category: "Return Process Friction"
+    question_refs: [2, 4]
+    detection_rules:
+      keywords:
+        - "return policy complicated"
+        - "hard to return"
+        - "return not accepted"
+        - "no return on this item"
+        - "return issues"
+        - "return process is a hassle"
+        - "can't return if size is wrong"
+        - "non-returnable"
+        - "return window too short"
+        - "had trouble returning"
+        - "return rejected"
+        - "courier pickup issue"
+        - "refund took too long"
+        - "return condition strict"
+      embedding_hint: >
+        A user is hesitating because they are worried that if the item doesn't fit
+        or isn't as expected, the return process will be difficult, slow, restricted,
+        or rejected. The risk of a non-returnable purchase is preventing them from buying.
+
+  - node_id: return_risk.purchase_irreversibility_fear
+    label: "Fear of Irreversible Purchase — Afraid of Being Stuck With Wrong Item"
+    dimension: "Return & Risk"
+    sub_category: "Irreversibility Anxiety"
+    question_refs: [2, 4]
+    detection_rules:
+      keywords:
+        - "afraid to buy online"
+        - "scared of getting wrong item"
+        - "can't try before buying"
+        - "risk of buying without trying"
+        - "no trial room"
+        - "purchase regret"
+        - "what if it doesn't look good"
+        - "stuck with item I don't want"
+        - "can't see how it looks on me"
+        - "afraid it will look different"
+        - "what if I don't like it in person"
+        - "can't touch and feel the fabric"
+      embedding_hint: >
+        A user is anxious about online purchases because they cannot try the item
+        before buying. The inability to see how it looks or feels in person creates
+        a fear of being stuck with a product that doesn't meet expectations.
+
+  # ===========================================================================
+  # DIMENSION 6 — Social Validation
+  # Maps to: Q1 (why wishlist), Q7 (social validation role), Q8 (intent vs bookmark)
+  # Nodes: 3
+  # ===========================================================================
+
+  - node_id: social_validation.peer_approval_seeking
+    label: "Peer Approval Seeking — Wants External Opinion Before Buying"
+    dimension: "Social Validation"
+    sub_category: "Peer Approval Seeking"
+    question_refs: [1, 7, 8]
+    detection_rules:
+      keywords:
+        - "asking friends before buying"
+        - "what do you think of this"
+        - "should I buy this"
+        - "need opinion"
+        - "share wishlist with friends"
+        - "asking for advice"
+        - "sent to friends for opinion"
+        - "waiting for feedback"
+        - "what does everyone think"
+        - "friend said don't buy"
+        - "second opinion"
+        - "showing options to partner"
+        - "screenshot sent to friend"
+      embedding_hint: >
+        A user consults friends, family, or social connections before completing a
+        purchase. They share wishlist items or screenshots to get external validation
+        that the item is a good choice before committing.
+
+  - node_id: social_validation.trend_alignment
+    label: "Trend Alignment — Buying to Stay Current with Fashion Trends"
+    dimension: "Social Validation"
+    sub_category: "Trend & Social Trend Motivation"
+    question_refs: [1, 7]
+    detection_rules:
+      keywords:
+        - "trending item"
+        - "everyone is wearing"
+        - "viral on instagram"
+        - "trending on reels"
+        - "influencer wearing this"
+        - "seen on instagram"
+        - "in style right now"
+        - "fashion trend"
+        - "trendy piece"
+        - "all my friends have this"
+        - "saw on social media"
+        - "popular this season"
+        - "current trend"
+      embedding_hint: >
+        A user is motivated to purchase an item because it is trending on social media,
+        worn by influencers, or fashionable among their peer group. Social visibility and
+        trend participation are key drivers of the wishlist add.
+
+  - node_id: social_validation.gifting_uncertainty
+    label: "Gifting Uncertainty — Unsure If Item Will Be Right for the Recipient"
+    dimension: "Social Validation"
+    sub_category: "Gift Purchase Uncertainty"
+    question_refs: [1, 7, 8]
+    detection_rules:
+      keywords:
+        - "buying as gift"
+        - "gift for someone"
+        - "not sure if they'll like it"
+        - "right gift"
+        - "gifting online"
+        - "size for gift"
+        - "gift purchase uncertainty"
+        - "recipient preference"
+        - "gift idea"
+        - "wishlist as gift hint"
+        - "gift wrapping"
+        - "gift for birthday"
+      embedding_hint: >
+        A user is purchasing or considering purchasing an item as a gift for another
+        person. They are uncertain whether the recipient will like it, whether the size
+        will be correct, or how to communicate their preference.
+
+  # ===========================================================================
+  # DIMENSION 7 — Product Information
+  # Maps to: Q3 (uncertainties), Q6 (external info seeking), Q7 (info role)
+  # Nodes: 3
+  # ===========================================================================
+
+  - node_id: product_info.missing_details
+    label: "Missing Product Details — Key Information Not Available on the Listing"
+    dimension: "Product Information"
+    sub_category: "Missing Product Details"
+    question_refs: [3, 6, 7]
+    detection_rules:
+      keywords:
+        - "no material details"
+        - "fabric not mentioned"
+        - "product description lacking"
+        - "missing information"
+        - "no fabric composition"
+        - "care instructions missing"
+        - "country of origin not stated"
+        - "dimensions not given"
+        - "no wash care label"
+        - "weight not listed"
+        - "incomplete product information"
+        - "need more details before buying"
+        - "product page is vague"
+      embedding_hint: >
+        A user cannot find key information about a product — such as fabric composition,
+        care instructions, exact dimensions, or material sourcing — on the product listing
+        page. This missing information prevents them from making a confident purchase decision.
+
+  - node_id: product_info.image_quality_doubt
+    label: "Image Quality Doubt — Product Looks Different in Real Life Than in Photos"
+    dimension: "Product Information"
+    sub_category: "Image Accuracy Concern"
+    question_refs: [3, 6, 7]
+    detection_rules:
+      keywords:
+        - "looks different in real life"
+        - "color not accurate"
+        - "photo is misleading"
+        - "not as shown in image"
+        - "different from picture"
+        - "bad product photos"
+        - "color looks different on screen"
+        - "photo filter used"
+        - "not what I expected from photos"
+        - "photos don't show real color"
+        - "image quality poor"
+        - "unreliable product images"
+        - "deceiving photos"
+      embedding_hint: >
+        A user is concerned that the product will look substantially different in
+        person compared to the product images on the listing. The photos may be
+        edited, use filters, or are otherwise unrepresentative of the actual product.
+
+  - node_id: product_info.fabric_material_uncertainty
+    label: "Fabric / Material Uncertainty — Unsure About Quality or Feel of Fabric"
+    dimension: "Product Information"
+    sub_category: "Fabric & Material Uncertainty"
+    question_refs: [3, 7]
+    detection_rules:
+      keywords:
+        - "not sure about fabric quality"
+        - "what material is this"
+        - "polyester vs cotton"
+        - "fabric feel"
+        - "breathable fabric"
+        - "cheap fabric"
+        - "fabric looks synthetic"
+        - "material quality concern"
+        - "doesn't look like good quality fabric"
+        - "itchy material"
+        - "need to feel the fabric"
+        - "fabric not clear from photo"
+        - "unsure about texture"
+      embedding_hint: >
+        A user cannot determine the quality, feel, or composition of the fabric from
+        the product listing. They are concerned that the material may be cheap, uncomfortable,
+        or different from what is implied by the photos or description.
+
+  # ===========================================================================
+  # DIMENSION 8 — Comparison Behavior
+  # Maps to: Q5 (comparison), Q6 (external info seeking)
+  # Nodes: 2
+  # ===========================================================================
+
+  - node_id: comparison.cross_platform_comparison
+    label: "Cross-Platform Comparison — Comparing Same or Similar Items Across Sites"
+    dimension: "Comparison Behavior"
+    sub_category: "Cross-Platform Product Comparison"
+    question_refs: [5, 6]
+    detection_rules:
+      keywords:
+        - "checking myntra and ajio both"
+        - "comparing on amazon and myntra"
+        - "same item on multiple sites"
+        - "which platform is better"
+        - "comparing platforms"
+        - "shopping on different sites"
+        - "myntra vs ajio"
+        - "found it on amazon too"
+        - "price comparison across sites"
+        - "same brand different platform"
+        - "comparison shopping"
+        - "checking other websites"
+      embedding_hint: >
+        A user is actively comparing the same item or similar alternatives across
+        multiple e-commerce platforms (Myntra, AJIO, Amazon, Flipkart, etc.) before
+        deciding where to buy or whether to buy at all.
+
+  - node_id: comparison.shortlisting_behavior
+    label: "Shortlisting — Wishlisting Multiple Options Before Narrowing Down"
+    dimension: "Comparison Behavior"
+    sub_category: "Multi-Option Shortlisting"
+    question_refs: [5, 6]
+    detection_rules:
+      keywords:
+        - "wishlisted multiple options"
+        - "can't choose between these"
+        - "comparing two items"
+        - "deciding between options"
+        - "shortlisted a few"
+        - "saved multiple to decide later"
+        - "need to narrow down"
+        - "choosing between two dresses"
+        - "can't pick one"
+        - "saved three versions to compare"
+        - "which one should I get"
+        - "comparing styles"
+      embedding_hint: >
+        A user has saved multiple similar items to their wishlist as a deliberate
+        shortlisting strategy, intending to compare them before choosing one to purchase.
+        The wishlist is being used as a decision-narrowing tool.
+
+  # ===========================================================================
+  # DIMENSION 9 — Intent Signal
+  # Maps to: Q8 (intent vs bookmark), Q9 (segment differences)
+  # Nodes: 2
+  # ===========================================================================
+
+  - node_id: intent_signal.genuine_purchase_intent
+    label: "Genuine Purchase Intent — Clear Signal of Imminent or Decided Purchase"
+    dimension: "Intent Signal"
+    sub_category: "Genuine Purchase Intent"
+    question_refs: [8, 9]
+    detection_rules:
+      keywords:
+        - "planning to buy this"
+        - "will buy next week"
+        - "waiting for payday"
+        - "as soon as I get paid"
+        - "definitely buying this"
+        - "adding to cart soon"
+        - "already decided to buy"
+        - "saved money for this"
+        - "going to purchase"
+        - "plan to order"
+        - "this is on my must-buy list"
+        - "buying on payday"
+        - "finalizing this purchase"
+      embedding_hint: >
+        A user has made a clear and decided intention to purchase an item — the wishlist
+        is being used as a pre-cart holding place, not passive inspiration. There is a
+        specific timeline or trigger mentioned (payday, event, sale).
+
+  - node_id: intent_signal.passive_bookmarking
+    label: "Passive Bookmarking — Saved Without Any Intention to Purchase"
+    dimension: "Intent Signal"
+    sub_category: "Passive / Non-Intent Bookmark"
+    question_refs: [8, 9]
+    detection_rules:
+      keywords:
+        - "just saving for reference"
+        - "not actually going to buy"
+        - "wishlist is just a folder"
+        - "saved but probably won't buy"
+        - "browsing and saving"
+        - "wishlist has hundreds of items"
+        - "window shopping online"
+        - "saved to scroll later"
+        - "hobby of adding to wishlist"
+        - "never check wishlist again"
+        - "wishlist just grows"
+        - "not serious about buying"
+        - "bookmarking habit"
+      embedding_hint: >
+        A user acknowledges that they routinely add items to wishlists without any
+        real intention to purchase. The wishlist is a browsing and saving habit, not
+        a purchase funnel step. These additions represent zero purchase intent.
+
+  # ===========================================================================
+  # DIMENSION 10 — Segment Markers
+  # Maps to: Q9 (segment differences), Q10 (consistent unmet needs)
+  # Nodes: 3
+  # ===========================================================================
+
+  - node_id: segment_markers.demographic_signal
+    label: "Demographic Signal — Mentions of Age, Gender, or Location Context"
+    dimension: "Segment Markers"
+    sub_category: "Demographic Identifier"
+    question_refs: [9, 10]
+    detection_rules:
+      keywords:
+        - "as a woman"
+        - "as a man"
+        - "college student"
+        - "working professional"
+        - "20s fashion"
+        - "30s fashion"
+        - "student budget"
+        - "first job salary"
+        - "tier 2 city"
+        - "metro city shopper"
+        - "homemaker"
+        - "teenage shopper"
+        - "young professional"
+        - "female shopper india"
+      embedding_hint: >
+        A user reveals demographic information — age group, gender, life stage, or
+        geographic context — that contextualizes their shopping behavior or explains
+        why a particular barrier or motivation is relevant to them.
+
+  - node_id: segment_markers.occasion_frequency
+    label: "Purchase Frequency Signal — Reveals How Often the User Shops Fashion Online"
+    dimension: "Segment Markers"
+    sub_category: "Purchase Frequency & Occasion Context"
+    question_refs: [9, 10]
+    detection_rules:
+      keywords:
+        - "I shop every month"
+        - "occasional shopper"
+        - "rarely buy online"
+        - "frequent buyer"
+        - "I buy a lot from myntra"
+        - "first time buying from"
+        - "loyal customer"
+        - "shop online regularly"
+        - "once in a while purchase"
+        - "buy every season"
+        - "bulk buyer"
+        - "occasional impulse buy"
+        - "how often I shop"
+      embedding_hint: >
+        A user reveals how frequently they purchase fashion items online. This signal
+        helps segment users into high-frequency repeat buyers vs. occasional or
+        first-time buyers, which shapes interpretation of their barriers and motivations.
+
+  - node_id: segment_markers.value_segment
+    label: "Value Segment — Budget vs. Premium Fashion Orientation"
+    dimension: "Segment Markers"
+    sub_category: "Value vs. Premium Orientation"
+    question_refs: [9, 10]
+    detection_rules:
+      keywords:
+        - "budget fashion"
+        - "looking for affordable"
+        - "cheap and good quality"
+        - "premium brand"
+        - "luxury fashion"
+        - "won't spend more than"
+        - "designer brand"
+        - "price-conscious shopper"
+        - "value buyer"
+        - "premium segment"
+        - "affordable fashion"
+        - "high-end label"
+        - "mid-range brands"
+      embedding_hint: >
+        A user signals whether they are primarily oriented toward budget/affordable
+        fashion or premium/luxury segments. This helps understand how price barriers,
+        brand trust, and quality expectations differ across spending tier segments.

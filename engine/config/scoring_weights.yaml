@@ -1,0 +1,95 @@
+# =============================================================================
+# scoring_weights.yaml
+# Public Conversation Analysis Engine — Opportunity Scoring Weights
+# =============================================================================
+#
+# Schema:
+#   w_frequency        : float — weight for Frequency Score (signal count)
+#   w_severity         : float — weight for Severity Score (user pain level)
+#   w_evidence_strength: float — weight for Evidence Strength Score (cross-source confidence)
+#
+# Constraint:
+#   w_frequency + w_severity + w_evidence_strength MUST equal 1.0
+#   The config validator will raise an error if they do not sum to 1.0 (within 0.001 tolerance).
+#
+# Composite Score formula:
+#   composite = (w_frequency * frequency_score)
+#             + (w_severity  * severity_score)
+#             + (w_evidence_strength * evidence_strength_score)
+#
+# Severity value mapping (used in severity_score computation):
+#   high    → 1.0
+#   medium  → 0.6
+#   low     → 0.3
+#   unknown → 0.5
+#
+# Evidence Strength formula (used in evidence_strength_score):
+#   evidence_strength = (distinct_source_types / 7) * avg_confidence_in_cluster
+#
+# Rationale for initial weights (0.40 / 0.35 / 0.25):
+#   - Frequency is given the highest weight because recurring themes across many
+#     signals are the strongest indicator of a systemic, addressable problem.
+#   - Severity is weighted second — high-pain signals represent stronger user need
+#     even if less frequent.
+#   - Evidence strength is weighted third; cross-source recurrence is already
+#     enforced by the cross-source validator (≥ 2 source types) so it provides
+#     a secondary refinement within qualifying clusters.
+#
+# To tune weights: adjust the three values while keeping them sum to 1.0.
+#   Example (severity-first): w_frequency: 0.30, w_severity: 0.45, w_evidence_strength: 0.25
+# =============================================================================
+
+scoring_weights:
+  w_frequency: 0.40
+  w_severity: 0.35
+  w_evidence_strength: 0.25
+
+# Confidence thresholds for signal quality filtering
+confidence_thresholds:
+  # Signals below this are flagged for review but not discarded
+  low_confidence_flag: 0.50
+  # Signals below this are excluded from scoring entirely
+  minimum_confidence: 0.30
+
+# Severity hint intensity keywords (used in signal construction — Phase 3)
+# These inform the severity_hint assigned to each Signal record.
+severity_intensity:
+  high:
+    - "never"
+    - "always"
+    - "hate"
+    - "frustrated"
+    - "terrible"
+    - "horrible"
+    - "worst"
+    - "completely wrong"
+    - "absolutely useless"
+    - "disaster"
+    - "nightmare"
+    - "unacceptable"
+    - "impossible"
+    - "furious"
+    - "angry"
+    - "disgusted"
+  medium:
+    - "annoying"
+    - "disappointing"
+    - "not great"
+    - "could be better"
+    - "unhappy"
+    - "not satisfied"
+    - "difficult"
+    - "hard to"
+    - "concerned"
+    - "worried"
+    - "confused"
+    - "unsure"
+  low:
+    - "minor issue"
+    - "slightly"
+    - "a bit"
+    - "not ideal"
+    - "okay but"
+    - "wish it was"
+    - "minor inconvenience"
+    - "small problem"
