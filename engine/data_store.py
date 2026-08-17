@@ -24,6 +24,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterator
@@ -33,7 +34,11 @@ from engine.logger import get_logger
 log = get_logger(__name__)
 
 # ── Store paths ────────────────────────────────────────────────────────────
-DATA_DIR = Path(__file__).parent / "data"
+# ENGINE_DATA_DIR is set by Railway Volume mount (/app/engine/data).
+# Falls back to the local path for CLI usage.
+DATA_DIR = Path(
+    os.environ.get("ENGINE_DATA_DIR", Path(__file__).parent / "data")
+)
 RAW_RECORDS_DIR = DATA_DIR / "raw_records"
 SIGNALS_DIR = DATA_DIR / "signals"
 OPPORTUNITIES_DIR = DATA_DIR / "opportunities"

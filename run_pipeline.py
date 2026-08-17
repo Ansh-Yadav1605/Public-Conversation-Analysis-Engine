@@ -18,6 +18,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 import time
 from pathlib import Path
@@ -35,7 +36,10 @@ from engine.scraper.run import run_scraping
 
 log = get_logger("engine.pipeline")
 
-DEFAULT_REPORTS_DIR = Path(__file__).parent / "engine" / "data" / "reports"
+_ENGINE_DATA_DIR = Path(
+    os.environ.get("ENGINE_DATA_DIR", Path(__file__).parent / "engine" / "data")
+)
+DEFAULT_REPORTS_DIR = _ENGINE_DATA_DIR / "reports"
 
 
 def run_full_pipeline(
