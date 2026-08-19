@@ -105,10 +105,6 @@ def clear_cache() -> None:
 # -----------------------------------------------------------------------------
 # Sidebar Navigation & Controls
 # -----------------------------------------------------------------------------
-st.sidebar.image(
-    "https://raw.githubusercontent.com/Ansh-Yadav1605/Public-Conversation-Analysis-Engine/main/engine/config/taxonomy.yaml",
-    width=0,
-)
 st.sidebar.title("🔍 Conversation Engine")
 st.sidebar.markdown(
     "Synthesize unorganized public discussions into **prioritized product opportunities**."
