@@ -17,52 +17,33 @@ pydantic>=2.5.0
 requests>=2.31.0
 httpx>=0.26.0
 
-# --- HTML scraping (Phase 2 — Forum & Review connectors) ---
+# --- HTML scraping & parsing ---
 beautifulsoup4>=4.12.3
 lxml>=5.1.0
-scrapy>=2.11.0
 
-# --- App Store / Play Store review scraping (Phase 2) ---
+# --- Review scraping ---
 # Note: app-store-scraper is installed via Dockerfile with --no-deps
 google-play-scraper>=1.2.4
 
-# --- Reddit API (Phase 2) ---
+# --- Social APIs ---
 praw>=7.7.1
-
-# --- YouTube Data API (Phase 2) ---
 google-api-python-client>=2.116.0
-
-# --- Twitter/X API (Phase 2) ---
 tweepy>=4.14.0
 
-# --- Text preprocessing (Phase 3) ---
+# --- Text preprocessing ---
 langdetect>=1.0.9
 nltk>=3.8.1
 regex>=2023.12.25
 
-# --- Sentence embedding / taxonomy matching (Phase 3) ---
+# --- Sentence embedding / taxonomy matching ---
 sentence-transformers>=2.3.1
-scikit-learn>=1.4.0
 numpy>=1.26.4
 
-# --- Data storage utilities (Phase 2–5) ---
-# SQLite is built into Python; no extra package needed.
-# jsonlines for convenient JSONL read/write:
+# --- Utilities & Logging ---
 jsonlines>=4.0.0
-
-# --- Unique ID generation ---
-# uuid is built into Python; no extra package needed.
-
-# --- Logging (enhanced formatting) ---
 colorlog>=6.8.2
-
-# --- Progress bars (CLI pipeline runs) ---
 tqdm>=4.66.2
 
-# --- Type stubs / development quality ---
-types-PyYAML>=6.0.12
-types-requests>=2.31.0
-
-# --- Testing (Phase 1 exit criterion: config validation tests) ---
+# --- Testing ---
 pytest>=8.0.0
 pytest-cov>=4.1.0
