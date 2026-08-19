@@ -21,7 +21,8 @@ COPY requirements.txt .
 # then install remaining requirements smoothly
 RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel \
     && python -m pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu \
-    && python -m pip install --no-cache-dir -r requirements.txt
+    && python -m pip install --no-cache-dir -r requirements.txt \
+    && python -m pip install --no-cache-dir app-store-scraper --no-deps
 
 # Copy the rest of the application
 COPY . .

@@ -23,7 +23,7 @@ lxml>=5.1.0
 scrapy>=2.11.0
 
 # --- App Store / Play Store review scraping (Phase 2) ---
-app-store-scraper>=0.3.5
+# Note: app-store-scraper is installed via Dockerfile with --no-deps to avoid requests==2.23.0 pin conflict
 google-play-scraper>=1.2.4
 
 # --- Reddit API (Phase 2) ---
