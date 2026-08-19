@@ -3,20 +3,25 @@ FROM python:3.11-slim
 # Set working directory
 WORKDIR /app
 
-# Install system build dependencies (needed by some Python packages)
+# Install system build dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         gcc \
+        libxml2-dev \
+        libxslt1-dev \
+        libffi-dev \
+        curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy root requirements first (for Docker layer caching)
 COPY requirements.txt .
 
-# Upgrade pip and install all dependencies using python -m pip
-# (avoids the 'pip: command not found' issue on slim images)
-RUN python -m pip install --no-cache-dir --upgrade pip \
- && python -m pip install --no-cache-dir -r requirements.txt
+# Install CPU-only PyTorch first (prevents downloading heavy 2.5GB CUDA packages)
+# then install remaining requirements smoothly
+RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && python -m pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu \
+    && python -m pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application
 COPY . .
