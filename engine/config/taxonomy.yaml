@@ -49,6 +49,12 @@ taxonomy:
         - "runs large"
         - "fit guide"
         - "size recommendation"
+        - "sizing issue"
+        - "wrong size"
+        - "size problem"
+        - "size wrong"
+        - "didn't fit"
+        - "size not correct"
       embedding_hint: >
         A user is uncertain about which clothing size to select before buying online.
         They do not trust the size chart, are unsure if the item runs true to size,
@@ -125,6 +131,11 @@ taxonomy:
         - "item too large"
         - "fit was off"
         - "returned due to fit"
+        - "too small"
+        - "too big"
+        - "size mismatch"
+        - "return for size"
+        - "exchange size"
       embedding_hint: >
         A user has already purchased and received an item, but had to return or exchange
         it specifically because the size or fit was wrong relative to their expectations
@@ -235,6 +246,12 @@ taxonomy:
         - "can't justify the price"
         - "pricey"
         - "expensive for what it is"
+        - "platform fee"
+        - "charging extra"
+        - "high price"
+        - "costly"
+        - "commission"
+        - "bogus fee"
       embedding_hint: >
         A user wants an item but finds the current price too high relative to their
         budget or their perceived value of the product. The price is the primary
@@ -286,6 +303,12 @@ taxonomy:
         - "poor quality for the cost"
         - "questionable quality"
         - "unsure about material"
+        - "poor quality"
+        - "bad quality"
+        - "cheap product"
+        - "quality is bad"
+        - "not worth"
+        - "waste of money"
       embedding_hint: >
         A user is uncertain whether the quality of the item — fabric, finish,
         construction — justifies the price being asked. They are not sure the product
@@ -363,6 +386,16 @@ taxonomy:
         - "can't trust the ratings"
         - "manipulated ratings"
         - "suspicious reviews"
+        - "fake product"
+        - "duplicate product"
+        - "fraud"
+        - "scam"
+        - "not original"
+        - "fake item"
+        - "counterfeit"
+        - "wrong product"
+        - "received wrong item"
+        - "cheating"
       embedding_hint: >
         A user suspects that the reviews on the platform are fake, paid, or otherwise
         manipulated. They do not trust the ratings or written reviews as genuine
@@ -419,6 +452,17 @@ taxonomy:
         - "courier pickup issue"
         - "refund took too long"
         - "return condition strict"
+        - "return request"
+        - "raised a return"
+        - "refund not received"
+        - "no action on return"
+        - "return problem"
+        - "exchange problem"
+        - "delivery issue"
+        - "delivery service bad"
+        - "late delivery"
+        - "order cancelled"
+        - "order not delivered"
       embedding_hint: >
         A user is hesitating because they are worried that if the item doesn't fit
         or isn't as expected, the return process will be difficult, slow, restricted,
