@@ -389,16 +389,15 @@ with tab_taxonomy:
         cfg = load_all_config()
         st.markdown("##### 🎯 6 Core PM Questions")
         for q in cfg.question_set.questions:
-            with st.expander(f"Q{q.id}: {q.text}"):
-                st.markdown(f"**Target Dimension:** `{q.dimension}`")
-                st.markdown(f"**Intent:** {q.intent}")
-                st.markdown(f"**Weight:** `{q.weight}`")
+            with st.expander(f"Q{q.question_id}: {q.question_text}"):
+                st.markdown(f"**Related Dimensions:** {', '.join(f'`{d}`' for d in q.related_dimensions)}")
+                if q.notes:
+                    st.markdown(f"**Notes:** {q.notes}")
 
         st.markdown("##### 🗂️ Taxonomy Dimensions & Nodes")
         for node in cfg.taxonomy.nodes:
-            with st.expander(f"[{node.dimension}] {node.node_name} (`{node.id}`)"):
-                st.markdown(f"**Keywords:** {', '.join(node.keywords)}")
-                if node.negative_keywords:
-                    st.markdown(f"**Negative Keywords:** {', '.join(node.negative_keywords)}")
+            with st.expander(f"[{node.dimension}] {node.label} (`{node.node_id}`)"):
+                st.markdown(f"**Keywords:** {', '.join(node.detection_rules.keywords)}")
+                st.markdown(f"**Question Refs:** {node.question_refs}")
     except Exception as exc:
         st.error(f"Could not load config: {exc}")
